@@ -41,7 +41,7 @@ const Viewer = () => {
 
   return (
     <Container maxWidth="lg">
-      <AppBar position="static">
+      <AppBar position="static" sx={{ backgroundColor: '#002e7b' }}>
         <Toolbar>
           <Typography variant="h6" component="div" style={{ fontSize: '2em'}}>
             Viewer Dashboard
@@ -58,19 +58,11 @@ const Viewer = () => {
             then the system look for that specific hash file in the IPFS server and returns that file along with other relevant data.
           </p>
         </Box>
-        {/* <Box flex={1} p={2}> */}
         
-        {/* </Box> */}
         <Box flex={1} p={1}>
           {storedHashes.length > 0 && (
             <Box flex={2} p={2} style={{ fontSize: '1.5em', textAlign: 'justify'}}>
 
-            {/* <Box
-              flex={1} p={2} textAlign="center"
-              sx={{
-                // border: '2px dashed #ccc',
-                // borderRadius: '8px',
-              }}> */}
               {storedHashes.map((file, index) => (
                 <div key={index}>
                   <img

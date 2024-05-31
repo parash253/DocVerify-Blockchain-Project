@@ -11,22 +11,6 @@ const HomePage = () => {
 
   return (
     <div>
-       {/* Glitch Part Of Classified
-      <div className="glitchpart">
-        <div>
-          <img className="glitch1" src="/classified.gif" alt="FireGiF" />
-        </div>
-      </div>
-      <div className="box" onClick={() => navigateTo('/issuer')}>
-        Issuer
-      </div>
-      <div className="box" onClick={() => navigateTo('/viewer')}>
-        Viewer
-      </div>
-      <div className="box" onClick={() => navigateTo('/verifier')}>
-        Verifier
-      </div> */}
-
       <div className="glitchpart">
         <div>
           <img className="glitch1" src="/classified.gif" alt="FireGiF" />

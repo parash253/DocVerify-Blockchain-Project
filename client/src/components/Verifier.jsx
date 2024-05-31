@@ -53,7 +53,6 @@ const Issuer = () => {
           "Content-Type": "multipart/form-data",
         },
       });
-      // const fileUrl = "https://maroon-biological-ladybug-118.mypinata.cloud/ipfs/" + responseData.data.IpfsHash;
       const ipfsHash = responseData.data.IpfsHash;
       console.log("IPFS Hash:", ipfsHash);
       if (contract) {
@@ -76,7 +75,7 @@ const Issuer = () => {
 
   return (
     <Container maxWidth="lg">
-      <AppBar position="static">
+      <AppBar position="static" sx={{ backgroundColor: '#002e7b' }}>
         <Toolbar>
           <Typography variant="h6" component="div" style={{ fontSize: '2em'}}>
             Verifier Dashboard
@@ -89,7 +88,6 @@ const Issuer = () => {
           <p>For verifying any document's authenticity, Just upload the document and the system handles the rest.</p>
           <p>The System compares the Unique Hash of the file with the hashes of the file in blockchain. If the hash is already present in the BlockChain then it is authentic.</p>
         </Box>
-      {/* style={{ backgroundColor: 'red'}} */}
 
         <Box flex={2} p={2}>
           <Box
@@ -98,7 +96,6 @@ const Issuer = () => {
               border: '2px dashed #ccc',
               borderRadius: '8px',
             }}>
-            {/* <CloudUploadIcon color="primary" sx={{ fontSize: 50, marginBottom: 2 }} /> */}
             <img src="https://du11hjcvx0uqb.cloudfront.net/dist/webpack-production/6dfed94f78923783.svg" alt=""></img>
             <Typography variant="h5" gutterBottom>
               Upload Files to Verify
