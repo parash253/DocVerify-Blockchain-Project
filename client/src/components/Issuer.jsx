@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { AppBar, Toolbar, Container, Box, IconButton, Button, Typography, CircularProgress, TextField } from '@mui/material';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { EthProvider } from ".././contexts/EthContext";
 import Web3 from 'web3';
 import SimpleStorage from '.././contracts/SimpleStorage.json';
 import EditIcon from '@mui/icons-material/Edit';
+import './issuer.css'; // Create a CSS file for styling if needed
 
 const Issuer = () => {
   const [account, setAccount] = useState('');
@@ -32,8 +32,8 @@ const Issuer = () => {
       setContract(contractInstance);
 
       const nameofCompany = await contractInstance.methods.getCompanyName(activeAccount).call();
-      setCompanyName(nameofCompany);
-      console.log("the name of company is : ", nameofCompany);
+      const companyNameToSet = nameofCompany || "Fill Your Company Details";
+      setCompanyName(companyNameToSet);
 
       const userFiles = await contractInstance.methods.getUserFiles(activeAccount).call();
       const hashes = userFiles.map(file => ({ ipfsHash: file.ipfsHash, studentName: file.studentName, studentHobby: file.studentHobby }));
@@ -48,14 +48,12 @@ const Issuer = () => {
     if (window.ethereum) {
       window.ethereum.on('accountsChanged', (accounts) => {
         setAccount(accounts[0]);
-        console.log("accounts (one) changed to : ",accounts[0]);
         loadBlockchainData(accounts[0]);
       });
     }
 
     return () => {
       if (window.ethereum) {
-        console.log("two is running");
         window.ethereum.removeListener('accountsChanged', () => {});
       }
     };
@@ -124,155 +122,277 @@ const Issuer = () => {
   }
 
   return (
-    <EthProvider>
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
-          <Toolbar>
-            <Typography variant="h6" sx={{ flexGrow: 1 }}>
-              My DApp
-            </Typography>
-            <h3>Account: {account}</h3>
-            {/* <Button color="inherit" onClick={loadBlockchainData}>Connect Wallet</Button> */}
-          </Toolbar>
-        </AppBar>
-      </Box>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          padding: 2,
-          border: '2px dashed #ccc',
-          borderRadius: '8px',
-          backgroundColor: '#f9f9f9',
-          width: '100%',
-          maxWidth: 400,
-          margin: '20px auto',
-        }}
-      >
-      <Typography variant="h5" sx={{ marginBottom: 2 }}>
-        {companyName}
-        <IconButton onClick={handleEditClick}>
-          <EditIcon />
-        </IconButton>
-      </Typography>
-      {isEditing && (
-        <>
-          <TextField
-            label="Company Name"
-            variant="outlined"
-            fullWidth
-            value={companyName}
-            onChange={handleCompanyNameChange}
-            sx={{ marginBottom: 2 }}
-          />
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleSetCompanyName}
-          >
-            Set
-          </Button>
-        </>
-      )}
+    // <EthProvider>
+    //   <Box sx={{ flexGrow: 1 }}>
+    //     <AppBar position="static">
+    //       <Toolbar>
+    //         <Typography variant="h6" sx={{ flexGrow: 1 }}>
+    //           My DApp
+    //         </Typography>
+    //         <h3>Account: {account}</h3>
+    //         {/* <Button color="inherit" onClick={loadBlockchainData}>Connect Wallet</Button> */}
+    //       </Toolbar>
+    //     </AppBar>
+    //   </Box>
+    //   <Box
+    //     sx={{
+    //       display: 'flex',
+    //       flexDirection: 'column',
+    //       alignItems: 'center',
+    //       padding: 2,
+    //       border: '2px dashed #ccc',
+    //       borderRadius: '8px',
+    //       backgroundColor: '#f9f9f9',
+    //       width: '100%',
+    //       maxWidth: 400,
+    //       margin: '20px auto',
+    //     }}
+    //   >
+    //   <Typography variant="h5" sx={{ marginBottom: 2 }}>
+    //     {companyName}
+    //     <IconButton onClick={handleEditClick}>
+    //       <EditIcon />
+    //     </IconButton>
+    //   </Typography>
+    //   {isEditing && (
+    //     <>
+    //       <TextField
+    //         label="Company Name"
+    //         variant="outlined"
+    //         fullWidth
+    //         value={companyName}
+    //         onChange={handleCompanyNameChange}
+    //         sx={{ marginBottom: 2 }}
+    //       />
+    //       <Button
+    //         variant="contained"
+    //         color="primary"
+    //         onClick={handleSetCompanyName}
+    //       >
+    //         Set
+    //       </Button>
+    //     </>
+    //   )}
       
 
-      </Box>
-      <Container sx={{ marginTop: 4 }}>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            padding: 2,
-            border: '2px dashed #ccc',
-            borderRadius: '8px',
-            backgroundColor: '#f9f9f9',
-            width: '100%',
-            maxWidth: 400,
-            margin: 'auto',
-          }}>
-          <CloudUploadIcon color="primary" sx={{ fontSize: 50, marginBottom: 2 }} />
-          <Typography variant="h6" gutterBottom>
-            Upload Credentials
-          </Typography>
-          <input
-            type="file"
-            onChange={handleFileChange}
-            style={{ display: 'none' }}
-            id="file-input"
-          />
-          <label htmlFor="file-input">
-            <Button variant="contained" component="span">
-              Choose File
-            </Button>
-          </label>
-          {file && (
-            <Typography variant='body1' sx={{ marginTop: 2 }}>
-              {file.name}
+    //   </Box>
+    //   <Container sx={{ marginTop: 4 }}>
+    //     <Box
+    //       sx={{
+    //         display: 'flex',
+    //         flexDirection: 'column',
+    //         alignItems: 'center',
+    //         padding: 2,
+    //         border: '2px dashed #ccc',
+    //         borderRadius: '8px',
+    //         backgroundColor: '#f9f9f9',
+    //         width: '100%',
+    //         maxWidth: 400,
+    //         margin: 'auto',
+    //       }}>
+    //       <CloudUploadIcon color="primary" sx={{ fontSize: 50, marginBottom: 2 }} />
+    //       <Typography variant="h6" gutterBottom>
+    //         Upload Credentials
+    //       </Typography>
+    //       <input
+    //         type="file"
+    //         onChange={handleFileChange}
+    //         style={{ display: 'none' }}
+    //         id="file-input"
+    //       />
+    //       <label htmlFor="file-input">
+    //         <Button variant="contained" component="span">
+    //           Choose File
+    //         </Button>
+    //       </label>
+    //       {file && (
+    //         <Typography variant='body1' sx={{ marginTop: 2 }}>
+    //           {file.name}
+    //         </Typography>
+    //       )}
+    //       <TextField
+    //         label="Student Name"
+    //         value={studentName}
+    //         onChange={handleStudentNameChange}
+    //         fullWidth
+    //         variant="outlined"
+    //         sx={{ marginTop: 2 }}
+    //       />
+    //       <TextField
+    //         label="Student Hobby"
+    //         value={studentHobby}
+    //         onChange={handleStudentHobbyChange}
+    //         fullWidth
+    //         variant="outlined"
+    //         sx={{ marginTop: 2 }}
+    //       />
+    //       <Button
+    //         type='submit'
+    //         variant="contained"
+    //         color="primary"
+    //         onClick={handelSubmit}
+    //         disabled={!file || isUploading}
+    //         sx={{ marginTop: 2 }}>
+    //         {isUploading ? <CircularProgress size={24} /> : 'Upload'}
+    //       </Button>
+    //     </Box>
+    //     <Box
+    //       sx={{
+    //         display: 'flex',
+    //         flexDirection: 'column',
+    //         alignItems: 'center',
+    //         padding: 2,
+    //         border: '2px dashed #ccc',
+    //         borderRadius: '8px',
+    //         backgroundColor: '#f9f9f9',
+    //         width: '100%',
+    //         maxWidth: 400,
+    //         margin: 'auto',
+    //         marginTop: 4
+    //       }}>
+    //       {storedHashes.length > 0 && (
+    //         <Box sx={{ marginTop: 2 }}>
+    //           <Typography variant="h6">Uploaded Files:</Typography>
+    //           {storedHashes.map((file, index) => (
+    //             <div key={index}>
+    //               <img
+    //                 src={`https://maroon-biological-ladybug-118.mypinata.cloud/ipfs/${file.ipfsHash}`}
+    //                 alt={`Uploaded file ${index + 1}`}
+    //                 style={{ width: '100%', marginBottom: '10px' }}
+    //               />
+    //               <div>
+    //                 <p>Student Name: {file.studentName}</p>
+    //                 <p>Student Hobby: {file.studentHobby}</p>
+    //               </div>
+    //             </div>
+    //           ))}
+    //         </Box>
+    //       )}
+    //     </Box>
+    //   </Container>
+    // </EthProvider> 
+    
+
+
+    <EthProvider>
+      <Container maxWidth="lg">
+        <AppBar position="static">
+          <Toolbar>
+            <Typography variant="h6" component="div" style={{ fontSize: '2em', flexGrow: 1 }}>
+              Issuer Dashboard
             </Typography>
-          )}
-          <TextField
-            label="Student Name"
-            value={studentName}
-            onChange={handleStudentNameChange}
-            fullWidth
-            variant="outlined"
-            sx={{ marginTop: 2 }}
-          />
-          <TextField
-            label="Student Hobby"
-            value={studentHobby}
-            onChange={handleStudentHobbyChange}
-            fullWidth
-            variant="outlined"
-            sx={{ marginTop: 2 }}
-          />
-          <Button
-            type='submit'
-            variant="contained"
-            color="primary"
-            onClick={handelSubmit}
-            disabled={!file || isUploading}
-            sx={{ marginTop: 2 }}>
-            {isUploading ? <CircularProgress size={24} /> : 'Upload'}
-          </Button>
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            padding: 2,
-            border: '2px dashed #ccc',
-            borderRadius: '8px',
-            backgroundColor: '#f9f9f9',
-            width: '100%',
-            maxWidth: 400,
-            margin: 'auto',
-            marginTop: 4
-          }}>
+            <Typography variant="h6" component="div" style={{ fontSize: '1.3em' }}>
+              LogIn as: {account}
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        
+        <Box display="flex" flexDirection={{ xs: 'column', md: 'row' }} py={4}>
+          <Box flex={1} p={2} style={{ fontSize: '1.5em', textAlign: 'justify'}}>
+            <div style={{ display: 'flex', justifyContent: 'space-between',}}>
+              <h2>{companyName}</h2>
+              <IconButton onClick={handleEditClick}>
+                <EditIcon />
+              </IconButton>
+            </div>
+            {isEditing && (
+              <>
+                <TextField
+                  label="Company Name"
+                  variant="outlined"
+                  fullWidth
+                  value={companyName}
+                  onChange={handleCompanyNameChange}
+                  sx={{ marginBottom: 2 }}
+                />
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleSetCompanyName}
+                >
+                  Set
+                </Button>
+              </>
+            )}
+            <p>This is an issuing organization Dashboard.</p>
+            <p>When Organization issue certificate to individuals, large size files like image, pdf, etc are stored in IPFS data storage because storing such large file on the blockchain is costly. Only the hash of that file is stored in the blockchain along with individuals details.</p>
+          </Box>
+        {/* style={{ backgroundColor: 'red'}} */}
           {storedHashes.length > 0 && (
-            <Box sx={{ marginTop: 2 }}>
-              <Typography variant="h6">Uploaded Files:</Typography>
+            <Box flex={2} p={2} style={{ fontSize: '1.5em', textAlign: 'justify'}}>
               {storedHashes.map((file, index) => (
                 <div key={index}>
                   <img
                     src={`https://maroon-biological-ladybug-118.mypinata.cloud/ipfs/${file.ipfsHash}`}
                     alt={`Uploaded file ${index + 1}`}
-                    style={{ width: '100%', marginBottom: '10px' }}
+                    style={{ width: '100%'}}
                   />
                   <div>
                     <p>Student Name: {file.studentName}</p>
-                    <p>Student Hobby: {file.studentHobby}</p>
+                    <p>Certificate Name: {file.studentHobby}</p>
                   </div>
                 </div>
               ))}
             </Box>
           )}
+
+          <Box flex={2} p={2}>
+            <Box
+              flex={1} p={2} textAlign="center"
+              sx={{
+                border: '2px dashed #ccc',
+                borderRadius: '8px',
+              }}>
+              <img src="https://du11hjcvx0uqb.cloudfront.net/dist/webpack-production/6dfed94f78923783.svg" alt=""></img>
+              <Typography variant="h5" gutterBottom>
+                Upload Credentials
+              </Typography>
+              <input
+                type="file"
+                onChange={handleFileChange}
+                style={{ display: 'none' }}
+                id="file-input"
+              />
+              <label htmlFor="file-input">
+                <Button variant="contained" component="span">
+                  Choose File
+                </Button>
+              </label>
+              {file && (
+                <Typography variant='body1' sx={{ marginTop: 2 }}>
+                  {file.name}
+                </Typography>
+              )}
+              <TextField
+                label="Student Name"
+                value={studentName}
+                onChange={handleStudentNameChange}
+                fullWidth
+                variant="outlined"
+                sx={{ marginTop: 2 }}
+              />
+              <TextField
+                label="Certificate Name"
+                value={studentHobby}
+                onChange={handleStudentHobbyChange}
+                fullWidth
+                variant="outlined"
+                sx={{ marginTop: 2 }}
+              />
+              <Button
+                type='submit'
+                variant="contained"
+                color="primary"
+                onClick={handelSubmit}
+                disabled={!file || isUploading}
+                sx={{ marginTop: 2 }}>
+                {isUploading ? <CircularProgress size={24} /> : 'Upload'}
+              </Button>
+            </Box>
+          </Box>
         </Box>
       </Container>
-    </EthProvider>   
+    </EthProvider>
   );
 };
 

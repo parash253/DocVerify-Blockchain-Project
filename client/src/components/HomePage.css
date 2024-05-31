@@ -1,26 +1,133 @@
-.home-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    flex-direction: column;
-  }
-  
-  .box {
-    width: 200px;
-    height: 100px;
-    background-color: #f0f0f0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 10px;
-    cursor: pointer;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-  }
-  
-  .box:hover {
-    background-color: #ddd;
-  }
-  
+/* Reset CSS */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+.container {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.hero {
+  background-image: url('/public/5.png');
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+  text-align: center;
+  padding: 200px 0;
+}
+/* 
+.hero .container {
+  max-width: 800px;
+} */
+
+.hero h1 {
+  font-size: 3em;
+  margin-bottom: 20px;
+}
+
+.hero p {
+  font-size: 1.7em;
+  margin-bottom: 30px;
+}
+
+.features {
+  /* padding: 40px 0; */
+  padding-top: 40px;
+}
+
+.features .container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.feature {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  margin: 0 10px;
+  font-size: 1.4em;
+  margin-bottom: 10px;
+}
+.feature:hover {
+  background-color: #ddd;
+}
+/* 
+.feature {
+  font-size: 1.4em;
+  margin-bottom: 10px;
+} */
+
+  /*GlitchPart Animation Code Begins*/
+.glitchpart{
+	position: fixed;
+	top: 0px;
+	left: 0%;
+	right: 0px;
+	width: 100%;
+	height: 100%;
+	animation: 3s glitch ;
+	animation-delay: 4s;
+	animation-fill-mode: forwards;
+	animation-timing-function: ease-in-out;
+	overflow: hidden;
+	z-index: 1;
+}
+@media screen and (min-width: 500px) {
+	.glitch1
+	{
+		width: 100%;
+		height: 100%;
+	}
+	.glitchpart
+	{
+		width: 100%;
+		height: 100%;
+	}
+}
+@media screen and (max-width: 600px) {
+
+	.glitch1
+	{
+		width: 100%;
+		height: 700px;
+	}
+	.glitchpart
+	{
+		width: 100%;
+		height: 700px;
+	}
+}
+@keyframes glitch{
+	0%{
+		
+		width: 100%;
+		height: 100%;
+	}
+	10%,20%,30%,40%,50%{
+		
+		width: 100%;
+		height: 1%;
+		top: 50%;
+		left: 0%;
+	}
+	80%,85%,90%,95%,97%{
+		
+			
+		height: 0.1%;
+		top: 50%;
+		width: 30%;
+		left: 30%;		
+	}
+	100%{
+		
+		height: 5%;
+		left: 45%;		
+		top: 50%;
+		width: 0%;
+	}
+}
