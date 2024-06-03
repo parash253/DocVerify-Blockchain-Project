@@ -4,19 +4,22 @@ import Web3 from 'web3';
 import SimpleStorage from '.././contracts/SimpleStorage.json';
 
 const Viewer = () => {
+  const [account, setAccount] = useState('');
   const [storedHashes, setStoredHashes] = useState([]);
 
   const loadBlockchainData = async (currentAccount) => {
     const web3 = new Web3(Web3.givenProvider || 'http://localhost:7545');
     const accounts = await web3.eth.getAccounts();
     const activeAccount = currentAccount || accounts[0];
+    setAccount(activeAccount);
     const networkId = await web3.eth.net.getId();
     const networkData = SimpleStorage.networks[networkId];
     // For detecting network Data, truffle config must point to correct ganache networks. check truffle config file configuration.
     if (networkData) {
       const contractInstance = new web3.eth.Contract(SimpleStorage.abi, networkData.address);
-      const userFiles = await contractInstance.methods.getUserFiles(activeAccount).call();
-      const hashes = userFiles.map(file => ({ ipfsHash: file.ipfsHash, studentName: file.studentName, studentHobby: file.studentHobby }));
+      const recipientfiles = await contractInstance.methods.getFilesByRecipientAddress(activeAccount).call();
+
+      const hashes = recipientfiles.map(file => ({ ipfsHash: file.ipfsHash, studentName: file.studentName, studentHobby: file.studentHobby }));
       setStoredHashes(hashes);
     } else {
       window.alert('SimpleStorage contract not deployed to detected network.');
@@ -27,6 +30,7 @@ const Viewer = () => {
     loadBlockchainData();
     if (window.ethereum) {
       window.ethereum.on('accountsChanged', (accounts) => {
+        setAccount(accounts[0]);
         loadBlockchainData(accounts[0]);
       });
     }
@@ -43,8 +47,11 @@ const Viewer = () => {
     <Container maxWidth="lg">
       <AppBar position="static" sx={{ backgroundColor: '#002e7b' }}>
         <Toolbar>
-          <Typography variant="h6" component="div" style={{ fontSize: '2em'}}>
+          <Typography variant="h6" component="div" style={{ fontSize: '2em', flexGrow: 1}}>
             Viewer Dashboard
+          </Typography>
+          <Typography variant="h6" component="div" style={{ fontSize: '1.3em' }}>
+            Your Account: {account}
           </Typography>
         </Toolbar>
       </AppBar>

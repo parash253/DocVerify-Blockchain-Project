@@ -13,10 +13,13 @@ const Issuer = () => {
   const[file,setFile] = useState("");
   const [studentName, setStudentName] = useState("");
   const [studentHobby, setStudentHobby] = useState("");
+  const [RecipientAddress, setRecipientAddress] = useState("");
+  
   const axios = require('axios');
 
   const [companyName, setCompanyName] = useState('Your Company name appears here.');
   const [isEditing, setIsEditing] = useState(false);
+
   const loadBlockchainData = async (currentAccount) => {
     const web3 = new Web3(Web3.givenProvider || 'http://localhost:7545');
     const accounts = await web3.eth.getAccounts();
@@ -35,7 +38,7 @@ const Issuer = () => {
       setCompanyName(companyNameToSet);
 
       const userFiles = await contractInstance.methods.getUserFiles(activeAccount).call();
-      const hashes = userFiles.map(file => ({ ipfsHash: file.ipfsHash, studentName: file.studentName, studentHobby: file.studentHobby }));
+      const hashes = userFiles.map(file => ({ RecipientAddress:file.recipientAddress, ipfsHash: file.ipfsHash, studentName: file.studentName, studentHobby: file.studentHobby }));
       setStoredHashes(hashes);
     } else {
       window.alert('SimpleStorage contract not deployed to detected network.');
@@ -79,6 +82,9 @@ const Issuer = () => {
   const handleStudentHobbyChange = (event) => {
     setStudentHobby(event.target.value);
   };
+  const handleRecipientAddressChangeg = (event) => {
+    setRecipientAddress(event.target.value);
+  };
 
   const handelSubmit = async(e) => {
     setIsUploading(true);
@@ -103,8 +109,8 @@ const Issuer = () => {
       if (contract) {
         const hashExists = await contract.methods.fileExistsInBlockchain(ipfsHash).call();
         if (!hashExists) {
-            await contract.methods.addFile(ipfsHash, studentName, studentHobby).send({ from: account });
-            const updatedHashes = [...storedHashes, { ipfsHash: ipfsHash, studentName: studentName, studentHobby: studentHobby }];
+            await contract.methods.addFile(RecipientAddress,ipfsHash, studentName, studentHobby).send({ from: account });
+            const updatedHashes = [...storedHashes, { RecipientAddress:RecipientAddress, ipfsHash: ipfsHash, studentName: studentName, studentHobby: studentHobby }];
             setStoredHashes(updatedHashes);
         } else {
             console.log("File already exists in the blockchain.");
@@ -177,6 +183,8 @@ const Issuer = () => {
                   <div>
                     <p>Student Name: {file.studentName}</p>
                     <p>Certificate Name: {file.studentHobby}</p>
+                    <p>Wallet Address:</p>
+                    <p>{file.RecipientAddress}</p>
                   </div>
                 </div>
               ))}
@@ -222,6 +230,14 @@ const Issuer = () => {
                 label="Certificate Name"
                 value={studentHobby}
                 onChange={handleStudentHobbyChange}
+                fullWidth
+                variant="outlined"
+                sx={{ marginTop: 2 }}
+              />
+              <TextField
+                label="Wallet Address of Recipient"
+                value={RecipientAddress}
+                onChange={handleRecipientAddressChangeg}
                 fullWidth
                 variant="outlined"
                 sx={{ marginTop: 2 }}
