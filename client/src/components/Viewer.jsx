@@ -57,6 +57,9 @@ const Viewer = () => {
       </AppBar>
       <Box display="flex" flexDirection={{ xs: 'column', md: 'row' }} py={4}>
         <Box flex={1} p={2} style={{ fontSize: '1.5em', textAlign: 'justify'}}>
+          {storedHashes.map((file) => (
+            <h2>Hi {file.studentName},</h2>
+          ))}
           <h2>Your Credentials direct from the Blockchain.</h2>
           <p>These Credentials are directly fetched from blockchain and IPFS server based on your Account.</p>
           <p>There are lots of things going in the background but to put it simple, things are done this way.</p>

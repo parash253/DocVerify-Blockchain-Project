@@ -5,18 +5,16 @@ body {
   color: #333;
 }
 
-.container {
-  width: 80%;
-  margin: 0 auto;
-}
-
 .hero {
-  background-image: url('/public/5.png');
-  background-size: cover;
-  background-position: center;
-  color: #fff;
-  text-align: center;
-  padding: 200px 0;
+	background-image: url('/public/5.png');
+	background-size: cover;
+	background-position: center;
+	color: #fff;
+	text-align: center;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .hero h1 {
@@ -29,34 +27,34 @@ body {
   margin-bottom: 30px;
 }
 
-.features {
-  /* padding: 40px 0; */
-  padding-top: 40px;
-}
+.box-container {
+	position:absolute;
+	bottom: 0px;
+	height: 260px;
+	display: flex;
+	justify-content: space-around;
+	width: 100%;
+	align-items: center;
+	background-color: rgba(0, 46, 123, 0.2);
+	backdrop-filter: blur(3px);
 
-.features .container {
-  display: flex;
-  justify-content: space-between;
-}
 
-.feature {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  flex: 1;
-  margin: 0 10px;
-  font-size: 1.4em;
-  margin-bottom: 10px;
+  }
+  
+  .box {
+	background-color: rgba(0, 46, 123, 0.5); /* Translucent blue */
+	backdrop-filter: blur(2px);
+	border-radius: 10px;
+	color: #fff;
+	text-align: center;
+	font-size: 1.4em;
+	padding: 20px;
+  }
+.box:hover {
+  	background-color: #fff;
+	color:black;
+
 }
-.feature:hover {
-  background-color: #ddd;
-}
-/* 
-.feature {
-  font-size: 1.4em;
-  margin-bottom: 10px;
-} */
 
   /*GlitchPart Animation Code Begins*/
 .glitchpart{
